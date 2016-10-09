@@ -3,7 +3,7 @@ This project is a set of Python scripts developed for the TNDY 405I Data Analyti
 Applications Across The Disciplines class at Claremont Graduate University (CGU)
 
 # Features
-This project is a set of scripts that supports pulling data from Twitter feed and online stock market APIs.
+This project is a set of scripts that supports pulling data from Twitter feeds and online stock market APIs.
 
 # Research Question
 
