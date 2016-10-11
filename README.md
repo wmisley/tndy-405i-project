@@ -25,6 +25,7 @@ The predictors that will be explored are variables such as:
 
 * Python 2.7.10
 * Tweepy
+* NLTK
 
 
 If you do not have the Tweepy package, do the following
@@ -33,6 +34,12 @@ If you do not have the Tweepy package, do the following
 git clone https://github.com/tweepy/tweepy.git
 cd tweepy
 python setup.py install
+```
+
+If you do not have the NLTK package, do the following
+
+```
+sudo pip install -U nltk
 ```
 
 # Resources
@@ -46,6 +53,8 @@ https://dev.twitter.com/rest/public
 Tweepy Python Package:
 https://github.com/tweepy/tweepy
 
+NLTK 3.0 Installation
+http://www.nltk.org/install.html
 
 Install NLTK: run sudo pip install -U nltk
 Install Numpy (optional): run sudo pip install -U numpy
