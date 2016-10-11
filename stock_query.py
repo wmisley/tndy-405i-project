@@ -4,6 +4,27 @@
 import requests
 import json
 
+
+def json_to_csv(json_record):
+    csv_record = ""
+    csv_record += json_record['Status']
+    csv_record += "," + str(parsed_json['High'])
+    csv_record += "," + parsed_json['Name']
+    csv_record += "," + str(parsed_json['LastPrice'])
+    csv_record += "," + parsed_json['Timestamp']
+    csv_record += "," + parsed_json['Symbol']
+    csv_record += "," + str(parsed_json['ChangePercent'])
+    csv_record += "," + str(parsed_json['Volume'])
+    csv_record += "," + str(parsed_json['ChangePercentYTD'])
+    csv_record += "," + str(parsed_json['MSDate'])
+    csv_record += "," + str(parsed_json['ChangeYTD'])
+    csv_record += "," + str(parsed_json['MarketCap'])
+    csv_record += "," + str(parsed_json['Open'])
+    csv_record += "," + str(parsed_json['Change'])
+    csv_record += "," + str(parsed_json['Low'])
+    return csv_record
+
+
 resp = requests.get('http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol=AAPL')
 
 print(resp)
@@ -25,6 +46,13 @@ print("Market Cap: " + str(parsed_json['MarketCap']))
 print("Open: " + str(parsed_json['Open']))
 print("Change: " + str(parsed_json['Change']))
 print("Low: " + str(parsed_json['Low']))
+
+
+fo = open("foo.txt", "w")
+fo.write( "Python is a great language.\nYeah its great!!\n")
+
+# Close opend file
+fo.close()
 
 #if resp.status_code != 200:
     # This means something went wrong.

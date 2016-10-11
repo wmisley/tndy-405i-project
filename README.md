@@ -45,3 +45,8 @@ https://dev.twitter.com/rest/public
 
 Tweepy Python Package:
 https://github.com/tweepy/tweepy
+
+
+Install NLTK: run sudo pip install -U nltk
+Install Numpy (optional): run sudo pip install -U numpy
+Test installation: run python then type import nltk
