@@ -22,6 +22,39 @@ class CompanyRecord:
         self.summary_quote = ""
 
 
+class CompanyStockRecord:
+    company = CompanyRecord()
+    adj_close = "0.0"
+    close = "0.0"
+    high = "0.0"
+    low = "0.0"
+    open = "0.0"
+    volume = "0"
+
+    def __init__(self):
+        self.init_values()
+
+    def __init__(self, comp, ystock_dict):
+        self.init_values()
+        self.company = comp
+        if not (ystock_dict is None):
+            self.adj_close = ystock_dict.get("Adj Close")
+            self.close = ystock_dict.get("Close")
+            self.high = ystock_dict.get("High")
+            self.low = ystock_dict.get("Low")
+            self.open = ystock_dict.get("Open")
+            self.volume = ystock_dict.get("Volume")
+
+    def init_values(self):
+        self.company = CompanyRecord()
+        self.adj_close = "0.0"
+        self.close = "0.0"
+        self.high = "0.0"
+        self.low = "0.0"
+        self.open = "0.0"
+        self.volume = "0"
+
+
 class CompanyFileReader:
     __file_path = ""
 

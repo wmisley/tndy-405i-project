@@ -26,6 +26,7 @@ The predictors that will be explored are variables such as:
 * Python 2.7.10
 * Tweepy
 * NLTK
+* ystockquote
 
 
 If you do not have the Tweepy package, do the following
@@ -42,7 +43,16 @@ If you do not have the NLTK package, do the following
 sudo pip install -U nltk
 ```
 
+To install ystockquote
+
+````
+pip install ystockquote
+```
+
 # Resources
+
+ystockquote
+https://github.com/cgoldberg/ystockquote
 
 MarkitOnDemand REST API:
 http://dev.markitondemand.com/MODApis/
