@@ -1,5 +1,6 @@
 import csv
 
+
 class TweetRecord:
     tweeter = ""
     tweet_id = ""
@@ -59,7 +60,7 @@ class TweetFileReader:
                 tweets.append(tweet)
 
                 line += 1
-                print(line)
+                #print(line)
 
         return tweets
 

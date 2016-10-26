@@ -8,6 +8,7 @@ class DictionaryRecord:
     neg_score = 0.0
     term = ""
     definition = ""
+    total_count = 1
 
     def __init__(self):
         self.pos = ""
@@ -16,6 +17,22 @@ class DictionaryRecord:
         self.neg_score = 0.0
         self.term = ""
         self.definition = ""
+        self.total_count = 1
+
+    def increment_total_count(self):
+        self.count += 1
+
+
+class TweetWordCount:
+    dict_rec = None
+    count = 1
+
+    def __init__(self, dictionary_record):
+        self.dict_rec = dictionary_record
+        self.count = 1
+
+    def increment_count(self):
+        self.count += 1
 
 
 class DictionaryReader:
@@ -38,7 +55,7 @@ class DictionaryReader:
                         clean_word = word.split("#")[0]
 
                         if len(clean_word) > 1:
-                            print(clean_word + " " + pos_score + " " + neg_score)
+                            #print(clean_word + " " + pos_score + " " + neg_score)
                             rec = DictionaryRecord()
                             rec.pos = pos
                             rec.word_id = word_id
