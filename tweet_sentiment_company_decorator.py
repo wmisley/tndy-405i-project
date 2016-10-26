@@ -2,8 +2,10 @@ import nltk
 import ystockquote
 import time
 import datetime
+import os
 from tweet_list import TweetRecord
 from company_list import CompanyStockRecord
+from sentiment_dictionary import DictionaryWordCount
 from nltk.probability import FreqDist
 
 
@@ -59,7 +61,7 @@ class TweetDecorator:
             result = ystockquote.get_historical_prices(symbol, next_business_day, next_business_day)
         except:
             print("Error calling ystockquote.get_historic_prices()")
-            time.sleep(10)
+            #time.sleep(10)
             return None
 
         else:
@@ -87,7 +89,7 @@ class TweetDecorator:
 
                 if not (sent_rec is None):
                     if not (sent_rec.term in sent_dict):
-                        sent_dict[sent_rec.term] = sent_rec
+                        sent_dict[sent_rec.term] = DictionaryWordCount(sent_rec)
                     else:
                         sent_dict[sent_rec.term].increment_count()
 
@@ -186,14 +188,22 @@ class CompanySentimentTweetWriter:
 
     def write_to_file(self, tweeter, full_file_path, comp_file_path):
         high_freq_words_list = self.get_freq_weighted_sentiment_words(50)
+        is_write_header = False
+
+        if not os.path.exists(full_file_path):
+            is_write_header = True
 
         full_csv_file = open(full_file_path, 'a')
         comp_csv_file = open(comp_file_path, 'a')
 
         header = self.get_csv_header(high_freq_words_list)
         print(header)
-        full_csv_file.write(header + "\n")
-        comp_csv_file.write(header + "\n")
+
+        if is_write_header:
+            full_csv_file.write(header + "\n")
+
+        if is_write_header:
+            comp_csv_file.write(header + "\n")
 
         for cst in self.cst_list:
             for comp_stock_rec in cst.comp_rec_list:
@@ -219,9 +229,9 @@ class CompanySentimentTweetWriter:
                     if not (word in high_freq_words):
                         high_freq_words[word] = sent_rec
                     else:
-                        high_freq_words[word].increment_total_count()
+                        high_freq_words[word].dict_rec.increment_total_count()
 
-        return sorted(high_freq_words, key=lambda w: high_freq_words[w].total_count, reverse=True)[: count]
+        return sorted(high_freq_words, key=lambda w: high_freq_words[w].dict_rec.total_count, reverse=True)[: count]
 
     def get_freq_weighted_sentiment_words(self, count):
         high_freq_words = {}
@@ -233,9 +243,9 @@ class CompanySentimentTweetWriter:
                     if not (word in high_freq_words):
                         high_freq_words[word] = sent_rec
                     else:
-                        high_freq_words[word].increment_total_count()
+                        high_freq_words[word].dict_rec.increment_total_count()
 
-        return sorted(high_freq_words, key=lambda w: (high_freq_words[w].total_count * abs(float(high_freq_words[w].neg_score) + float(high_freq_words[w].pos_score))), reverse=True)[: count]
+        return sorted(high_freq_words, key=lambda w: (high_freq_words[w].dict_rec.total_count * abs(float(high_freq_words[w].dict_rec.neg_score) + float(high_freq_words[w].dict_rec.pos_score))), reverse=True)[: count]
 
     def output(self):
         for cst in self.cst_list:

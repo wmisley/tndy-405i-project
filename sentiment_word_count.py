@@ -10,46 +10,42 @@ twitter_file = "/Users/will4769/Downloads/Tweets/jessefelder_tweets.log"
 
 
 def create_decorated_files(tweet_folder, words, comp_dict):
-    for file_name in os.listdir(tweet_folder):
-        file_path = os.path.join(tweet_folder, file_name)
+    cst_mast_list = []
 
-        if os.path.isfile(file_path):
-            print(file_name)
-            if file_name.split("_")[1] == "tweets.log":
-                print("Processing " + file_path)
-                tweeter = file_name.split("_")[0]
+    try:
+        for file_name in os.listdir(tweet_folder):
+            file_path = os.path.join(tweet_folder, file_name)
 
-                process(tweeter, file_path, words, comp_dict)
+            if os.path.isfile(file_path):
+                print(file_name)
+                if file_name.split("_")[1] == "tweets.log":
+                    print("Processing " + file_path)
+                    tweeter = file_name.split("_")[0]
 
+                    twitter_reader = TweetFileReader(file_path)
+                    tweets = twitter_reader.parse(tweeter)
 
-def process(tweeter, file_path, words, comp_dict):
-    twitter_reader = TweetFileReader(file_path)
-    tweets = twitter_reader.parse(tweeter)
+                    tweet_dec = TweetDecorator(words, comp_dict)
+                    cst_list = tweet_dec.add_sentiment_words(tweets)
+                    cst_mast_list.extend(cst_list)
+    except:
+        print("Error reading data")
 
-    tweet_dec = TweetDecorator(words, comp_dict)
-    cst_list = tweet_dec.add_sentiment_words(tweets)
-
-    cst_writer = CompanySentimentTweetWriter(cst_list)
-
+    print("Writing out data")
+    cst_writer = CompanySentimentTweetWriter(cst_mast_list)
     full = "/tmp/full.log"
     comp = "/tmp/comp.log"
-
     cst_writer.write_to_file(tweeter, full, comp)
+
 
 
 print("Reading sentiment dictionary")
 reader = DictionaryReader(sentiment_dict_file)
 words = reader.parse()
 
-#for key, val in words.items():
-#    print(val.term + ":" + val.pos_score + ":" + val.neg_score)
-
 print("Reading company file")
 company_reader = CompanyFileReader(company_list_file)
 comp_dict = company_reader.parse()
-
-#for key, val in comp_dict.items():
-#    print(val.symbol + ":" + val.name)
 
 full = "/tmp/full.log"
 comp = "/tmp/comp.log"

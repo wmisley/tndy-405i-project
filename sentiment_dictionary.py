@@ -20,10 +20,10 @@ class DictionaryRecord:
         self.total_count = 1
 
     def increment_total_count(self):
-        self.count += 1
+        self.total_count += 1
 
 
-class TweetWordCount:
+class DictionaryWordCount:
     dict_rec = None
     count = 1
 
