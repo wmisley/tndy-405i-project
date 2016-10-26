@@ -6,17 +6,17 @@ from nltk.probability import FreqDist
 
 
 class CompanySentimentTweet:
-    sent_rec_list = []
+    sent_rec_dict = {}
     comp_rec_list = []
     tweet_rec = TweetRecord()
 
     def __init__(self):
-        self.sent_rec_list = []
+        self.sent_rec_dict = {}
         self.comp_rec_list = []
         self.tweet_rec = None
 
-    def __init__(self, tweet, dictionary_record_list=None, company_record_list=None):
-        self.sent_rec_list = dictionary_record_list
+    def __init__(self, tweet, dictionary_record_dict=None, company_record_list=None):
+        self.sent_rec_dict = dictionary_record_dict
         self.comp_rec_list = company_record_list
         self.tweet_rec = tweet
 
@@ -46,7 +46,7 @@ class TweetDecorator:
         tweet_count = 0
 
         for tweet in tweets:
-            sent_list = []
+            sent_list = {}
             comp_list = []
             tweet_count += 1
             print(str(tweet_count) + ":" + tweet.tweet_text)
@@ -59,9 +59,9 @@ class TweetDecorator:
                 # get the words with sentiment from the tweet
                 sent_rec = self.sent_dict.get(word)
                 if not (sent_rec is None):
-                    sent_list.append(sent_rec)
+                    sent_list[sent_rec.term] = sent_rec
 
-                # get companies from the tweet
+                # get companies from the tweet and add stock price
                 if self.comp_ignor_dict.get(word) is None:
                     company = self.comp_dict.get(word)
                     if not (company is None):
@@ -77,13 +77,14 @@ class TweetDecorator:
 
     def output(self, cst_list):
         for cst in cst_list:
-            if (len(cst.sent_rec_list) > 0) and (len(cst.comp_rec_list) > 0):
+            if (len(cst.sent_rec_dict) > 0) and (len(cst.comp_rec_list) > 0):
                 print("------------")
                 print(cst.tweet_rec.tweet_text)
 
                 print("words:")
-                for sent_rec in cst.sent_rec_list:
-                    print(sent_rec.term + ":" + str(sent_rec.pos_score) + ":" + str(sent_rec.neg_score))
+                if len(cst.sent_rec_dict) > 0:
+                    for key, sent_rec in cst.sent_rec_dict.items():
+                        print(sent_rec.term + ":" + str(sent_rec.pos_score) + ":" + str(sent_rec.neg_score))
 
                 print("company:")
                 for comp_rec in cst.comp_rec_list:
