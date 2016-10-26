@@ -13,10 +13,10 @@ sys.setdefaultencoding('utf8')
 
 tweet_log_folder = "/Users/will4769/Downloads/Tweets"
 twitter_user = "MarketPlunger"
-consumer_key = "n2WebZuPpCWG9xguQ9Nx6sJLW"
-consumer_secret = "WTfshJzVzrSaWuT4hjEtlV6KivAQa79unN9eCCGIrtduQtQ8vr"
-access_token = "70616645-l81XYFgtS7E9a2WsrlC5OHE8OqM2ywC3aV28MPMMN"
-access_token_secret = "67r1dgZvJwhse1z8hl026pSsZESwkuzVZfRekBdvvqTct"
+consumer_key = ""
+consumer_secret = ""
+access_token = "70616645-"
+access_token_secret = ""
 folder_separator = "/"
 max_query_times = 180
 
