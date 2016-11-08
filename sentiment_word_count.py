@@ -26,8 +26,9 @@ def create_decorated_files(tweet_folder, words, comp_dict):
                     tweets = twitter_reader.parse(tweeter)
 
                     tweet_dec = TweetDecorator(words, comp_dict)
-                    cst_list = tweet_dec.add_sentiment_words(tweets)
+                    cst_list = tweet_dec.add_sentiment_words(tweeter, tweets)
                     cst_mast_list.extend(cst_list)
+
     except:
         print("Error reading data")
 
@@ -35,7 +36,7 @@ def create_decorated_files(tweet_folder, words, comp_dict):
     cst_writer = CompanySentimentTweetWriter(cst_mast_list)
     full = "/tmp/full.log"
     comp = "/tmp/comp.log"
-    cst_writer.write_to_file(tweeter, full, comp)
+    cst_writer.write_to_file(full, comp)
 
 
 

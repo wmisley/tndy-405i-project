@@ -10,16 +10,19 @@ from nltk.probability import FreqDist
 
 
 class CompanySentimentTweet:
+    tweeter = ""
     sent_rec_dict = {}
     comp_rec_list = []
     tweet_rec = TweetRecord()
 
     def __init__(self):
+        self.tweeter = ""
         self.sent_rec_dict = {}
         self.comp_rec_list = []
         self.tweet_rec = None
 
-    def __init__(self, tweet, dictionary_record_dict=None, company_record_list=None):
+    def __init__(self, tweet, tweeter="", dictionary_record_dict=None, company_record_list=None):
+        self.tweeter = tweeter
         self.sent_rec_dict = dictionary_record_dict
         self.comp_rec_list = company_record_list
         self.tweet_rec = tweet
@@ -69,7 +72,7 @@ class TweetDecorator:
             print("result date:" + str(result.get(date)))
             return result.get(date)
 
-    def add_sentiment_words(self, tweets):
+    def add_sentiment_words(self, tweeter, tweets):
         cst_list = []
         tweet_count = 0
 
@@ -103,7 +106,7 @@ class TweetDecorator:
                                 c = CompanyStockRecord(company, stock_result)
                                 comp_list.append(c)
 
-            cst = CompanySentimentTweet(tweet, sent_dict, comp_list)
+            cst = CompanySentimentTweet(tweet, tweeter, sent_dict, comp_list)
             cst_list.append(cst)
 
         return cst_list
@@ -186,7 +189,7 @@ class CompanySentimentTweetWriter:
                 csv_record += "0,"
         return csv_record[:-1]
 
-    def write_to_file(self, tweeter, full_file_path, comp_file_path):
+    def write_to_file(self, full_file_path, comp_file_path):
         high_freq_words_list = self.get_freq_weighted_sentiment_words(50)
         is_write_header = False
 
@@ -207,7 +210,7 @@ class CompanySentimentTweetWriter:
 
         for cst in self.cst_list:
             for comp_stock_rec in cst.comp_rec_list:
-                csv_record = tweeter + ","
+                csv_record = cst.tweeter + ","
                 csv_record += self.get_company_csv_rec(comp_stock_rec)
                 csv_record += self.get_tweet_csv_rec(cst.tweet_rec)
                 csv_record += self.get_word_csv_rec(high_freq_words_list, cst.sent_rec_dict)
