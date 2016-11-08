@@ -34,8 +34,8 @@ def create_decorated_files(tweet_folder, words, comp_dict):
 
     print("Writing out data")
     cst_writer = CompanySentimentTweetWriter(cst_mast_list)
-    full = "/tmp/full.log"
-    comp = "/tmp/comp.log"
+    full = "/tmp/full_tweets_3.log"
+    comp = "/tmp/comp_tweets_3.log"
     cst_writer.write_to_file(full, comp)
 
 
@@ -48,8 +48,8 @@ print("Reading company file")
 company_reader = CompanyFileReader(company_list_file)
 comp_dict = company_reader.parse()
 
-full = "/tmp/full.log"
-comp = "/tmp/comp.log"
+full = "/tmp/full_tweets_3.log"
+comp = "/tmp/comp_tweets_3.log"
 
 if os.path.exists(full):
     os.unlink(full)

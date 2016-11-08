@@ -135,6 +135,11 @@ class CompanySentimentTweetWriter:
         header += "stock.open,"
         header += "stock.volume,"
 
+        header += "stock.close_open_diff,"
+        header += "stock.close_open_diff_percent,"
+        header += "stock.high_low_diff,"
+        header += "stock.high_low_diff_percent,"
+
         header += "tweet.id_str,"
         header += "tweet.text,"
         header += "tweet.retweet_count,"
@@ -152,7 +157,12 @@ class CompanySentimentTweetWriter:
     def get_company_csv_rec(self, comp_stock_rec):
         csv_record = str(comp_stock_rec.company.symbol) + ","
         csv_record += "\"" + comp_stock_rec.company.name + "\","
-        csv_record += str("{0:.2f}".format(float(comp_stock_rec.company.last_sale))) + ","
+
+        try:
+            csv_record += str("{0:.2f}".format(float(comp_stock_rec.company.last_sale))) + ","
+        except:
+            csv_record += comp_stock_rec.company.last_sale
+
         csv_record += str(comp_stock_rec.company.market_cap) + ","
         csv_record += str(comp_stock_rec.company.ipo_year) + ","
         csv_record += str(comp_stock_rec.company.sector) + ","
@@ -165,6 +175,18 @@ class CompanySentimentTweetWriter:
         csv_record += str("{0:.2f}".format(float(comp_stock_rec.low))) + ","
         csv_record += str("{0:.2f}".format(float(comp_stock_rec.open))) + ","
         csv_record += str("{0:.2f}".format(float(comp_stock_rec.volume))) + ","
+
+        close_open_diff = float(comp_stock_rec.close) - float(comp_stock_rec.open)
+        csv_record += str("{0:.2f}".format(float(close_open_diff))) + ","
+
+        close_open_diff_percent = float(close_open_diff) / float(comp_stock_rec.open) * 100.0
+        csv_record += str("{0:.2f}".format(float(close_open_diff_percent))) + ","
+
+        high_low_diff = float(comp_stock_rec.high) - float(comp_stock_rec.low)
+        csv_record += str("{0:.2f}".format(float(high_low_diff))) + ","
+
+        high_low_diff_percentage = float(high_low_diff) / float(comp_stock_rec.open) * 100.0
+        csv_record += str("{0:.2f}".format(float(high_low_diff_percentage))) + ","
 
         return csv_record
 
@@ -190,7 +212,7 @@ class CompanySentimentTweetWriter:
         return csv_record[:-1]
 
     def write_to_file(self, full_file_path, comp_file_path):
-        high_freq_words_list = self.get_freq_weighted_sentiment_words(50)
+        high_freq_words_list = self.get_freq_weighted_sentiment_words(500)
         is_write_header = False
 
         if not os.path.exists(full_file_path):
